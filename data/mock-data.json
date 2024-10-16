@@ -1,0 +1,4 @@
+[
+    { "id": 1, "longitude": 30.99, "latitude": 29.78, "vehicleCount": 200, "congestion": "medium" },
+    { "id": 2, "longitude": 30.98, "latitude": 29.79, "vehicleCount": 350, "congestion": "high" }
+]
