@@ -40,7 +40,7 @@ function updateTrafficNodes(trafficNodes) {
 
 // Function to fetch mock traffic data and update the map
 function fetchTrafficData() {
-    d3.json("../data/mock-data.json").then(function(data) {
+    d3.json("data/mock-data.json").then(function(data) {
         updateTrafficNodes(data);
     });
 }
