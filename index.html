@@ -2,25 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>City Traffic Dashboard</title>
-    <!-- Link to D3.js -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <link href='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css' rel='stylesheet' />
-<script src='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js'></script>
-
     <style>
-        body { font-family: Arial, sans-serif; }
-        #map { border: 1px solid #ddd; width: 100%; height: 500px; }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        #map { position: relative; width: 960px; height: 500px; margin: 0 auto; }
+        #map img { position: absolute; top: 0; left: 0; width: 960px; height: 500px; }
+        #map svg { position: absolute; top: 0; left: 0; width: 960px; height: 500px; }
+        h1 { text-align: center; padding: 20px 0; }
     </style>
 </head>
 <body>
     <h1>City Traffic Dashboard</h1>
-
-    <!-- This is where the map and traffic nodes will be drawn -->
-    <svg id="map"></svg>
-
-    <!-- Link to the custom JavaScript file -->
+    <div id="map">
+        <img src="img/map.png" alt="Map Background">
+        <svg></svg>
+    </div>
     <script src="js/main.js"></script>
 </body>
 </html>
