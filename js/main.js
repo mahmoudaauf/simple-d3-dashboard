@@ -1,61 +1,58 @@
-// Set up the SVG canvas dimensions and position it over the map image
-const svg = d3.select("#map svg")
+// Mapbox access token (replace with your own Mapbox token)
+mapboxgl.accessToken = 'pk.eyJ1IjoibWFobW91ZGF1ZiIsImEiOiJjbTJjdnh3aW8wZHBiMmpzN2pxbjA2amZnIn0.-ODDd6wzvKwIg6EIbp3SSw';
+
+// Initialize the Mapbox map
+const map = new mapboxgl.Map({
+    container: 'map',  // ID of the container element
+    style: 'mapbox://styles/mapbox/streets-v11',  // Map style
+    center: [30.99, 29.77],  // Longitude, Latitude of the center (e.g., Marassi)
+    zoom: 12  // Initial zoom level
+});
+
+// Add an SVG overlay for the traffic nodes on top of the Mapbox map
+const svg = d3.select("svg")
     .attr("width", 960)
     .attr("height", 500);
 
-// Define the width and height for later use
-const width = +svg.attr("width");
-const height = +svg.attr("height");
+// Function to convert geo-coordinates (longitude, latitude) to screen coordinates (x, y)
+function project([lon, lat]) {
+    const point = map.project(new mapboxgl.LngLat(lon, lat));
+    return {x: point.x, y: point.y};
+}
 
-// Since we're using a static map image, we need to adjust the projection
-// to match the image's scale and position.
-// We'll use d3.geoMercator and set the scale and translate accordingly.
-
-const projection = d3.geoMercator()
-    .scale(500000)  // Adjust the scale to fit your map image
-    .center([30.99, 29.77])  // Center of the map (longitude, latitude)
-    .translate([width / 2, height / 2]);  // Center the map in the SVG
-
-// Function to update traffic nodes on the map
+// Function to update traffic nodes
 function updateTrafficNodes(trafficNodes) {
-    // Bind the traffic data to circles
     const circles = svg.selectAll("circle")
-        .data(trafficNodes, d => d.id);
+        .data(trafficNodes, d => d.id);  // Bind data to circles using 'id' as the key
 
     // Update existing circles
     circles
         .transition()
         .duration(1000)
-        .attr("cx", d => projection([d.longitude, d.latitude])[0])
-        .attr("cy", d => projection([d.longitude, d.latitude])[1])
-        .attr("r", d => d.vehicleCount / 50)
-        .attr("fill", d => d.congestion === 'high' ? 'red' : 'green');
+        .attr("cx", d => project([d.longitude, d.latitude]).x)  // Longitude to x
+        .attr("cy", d => project([d.longitude, d.latitude]).y)  // Latitude to y
+        .attr("r", d => d.vehicleCount / 50)  // Scale radius based on vehicle count
+        .attr("fill", d => d.congestion === 'high' ? 'red' : 'green');  // Color based on congestion
 
-    // Add new circles
+    // Add new circles if they don't exist
     circles.enter()
         .append("circle")
-        .attr("cx", d => projection([d.longitude, d.latitude])[0])
-        .attr("cy", d => projection([d.longitude, d.latitude])[1])
+        .attr("cx", d => project([d.longitude, d.latitude]).x)
+        .attr("cy", d => project([d.longitude, d.latitude]).y)
         .attr("r", d => d.vehicleCount / 50)
         .attr("fill", d => d.congestion === 'high' ? 'red' : 'green')
         .attr("opacity", 0.7);
 
-    // Remove old circles
+    // Remove circles that no longer have corresponding data
     circles.exit().remove();
 }
 
-// Function to fetch mock traffic data and update the map
+// Fetch traffic data from the mock JSON file
 function fetchTrafficData() {
     d3.json("data/mock-data.json").then(function(data) {
-        // Simulate real-time updates by modifying vehicleCount and congestion
-        data.forEach(node => {
-            node.vehicleCount = Math.floor(Math.random() * 500);
-            node.congestion = node.vehicleCount > 300 ? 'high' : 'medium';
-        });
-
-        updateTrafficNodes(data);
+        updateTrafficNodes(data);  // Pass the fetched data to update the nodes
     }).catch(function(error) {
-        console.error("Error loading data:", error);
+        console.error("Error loading data:", error);  // Log if there's an error
     });
 }
 
@@ -64,3 +61,7 @@ fetchTrafficData();
 
 // Simulate real-time updates by refreshing data every 5 seconds
 setInterval(fetchTrafficData, 5000);
+
+// Re-render the traffic nodes whenever the map is zoomed or moved
+map.on("viewreset", () => fetchTrafficData());
+map.on("move", () => fetchTrafficData());
