@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple D3.js Traffic Dashboard</title>
-    <script src="https://d3js.org/d3.v7.min.js"></script> <!-- D3.js Library -->
+    <title>City Traffic Dashboard</title>
+    <!-- Link to D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         body { font-family: Arial, sans-serif; }
-        #map { border: 1px solid #ddd; }
+        #map { border: 1px solid #ddd; width: 100%; height: 500px; }
     </style>
 </head>
 <body>
-    <h1>Simple D3.js Traffic Dashboard</h1>
+    <h1>City Traffic Dashboard</h1>
 
-    <!-- SVG canvas for the map -->
-    <svg id="map" width="960" height="500"></svg>
+    <!-- This is where the map and traffic nodes will be drawn -->
+    <svg id="map"></svg>
 
-    <!-- Link to our JavaScript file -->
+    <!-- Link to the custom JavaScript file -->
     <script src="js/main.js"></script>
 </body>
 </html>
