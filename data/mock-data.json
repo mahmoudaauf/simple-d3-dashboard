@@ -1,4 +1,23 @@
 [
-    { "id": 1, "longitude": 30.99, "latitude": 29.78, "vehicleCount": 200, "congestion": "medium" },
-    { "id": 2, "longitude": 30.98, "latitude": 29.79, "vehicleCount": 350, "congestion": "high" }
+    {
+        "id": 1,
+        "longitude": 30.99,
+        "latitude": 29.78,
+        "vehicleCount": 300,
+        "congestion": "high"
+    },
+    {
+        "id": 2,
+        "longitude": 30.98,
+        "latitude": 29.79,
+        "vehicleCount": 150,
+        "congestion": "medium"
+    },
+    {
+        "id": 3,
+        "longitude": 30.97,
+        "latitude": 29.80,
+        "vehicleCount": 450,
+        "congestion": "high"
+    }
 ]
